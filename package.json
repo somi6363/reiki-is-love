@@ -1,0 +1,24 @@
+{
+  "name": "reiki-is-love",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_OPTIONS=\"--require ./build/patch-cpus.cjs\" nuxt dev",
+    "build": "NODE_OPTIONS=\"--require ./build/patch-cpus.cjs\" nuxt build",
+    "preview": "nuxt preview",
+    "start": "node .output/server/index.mjs",
+    "db:seed": "node scripts/seed.mjs",
+    "db:reset": "rm -f data/app.db data/app.db-wal data/app.db-shm && node scripts/seed.mjs",
+    "test": "node scripts/test.mjs",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "3.21.11"
+  },
+  "devDependencies": {
+    "@vite-pwa/nuxt": "1.1.1"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}
