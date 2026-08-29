@@ -1,0 +1,490 @@
+/**
+ * Design tokens — the single source of truth for the visual identity.
+ *
+ * Every colour, radius and shadow in the app comes from here. Changing the
+ * palette means editing this file, not hunting through components.
+ *
+ * Palette from the brief: warm cream ground, deep emerald, soft sage,
+ * champagne gold accents, dark charcoal text. Explicitly NOT: neon chakra
+ * gradients, cosmic purples, anything that reads as fantasy.
+ */
+
+:root {
+  /* --- Surfaces ---------------------------------------------------------- */
+  --cream: #faf6ef; /* dominant background */
+  --cream-deep: #f3ece0; /* section bands, subtle separation */
+  --card: #fffdf9; /* cards sit slightly above the ground */
+  --card-alt: #f7f2e8;
+
+  /* --- Greens ------------------------------------------------------------ */
+  --emerald: #1f4d3d; /* primary: headings, buttons, active nav */
+  --emerald-deep: #16382c; /* pressed state, high-contrast text on cream */
+  --emerald-soft: #2d6b54;
+  --sage: #a8bfae; /* borders, muted icons */
+  --sage-light: #d7e3d8; /* fills, chips */
+  --sage-wash: #eef3ee; /* the lightest tint, for hover */
+
+  /* --- Gold -------------------------------------------------------------- */
+  /* Champagne, not brass. Used sparingly: premium badges, dividers, accents. */
+  --gold: #c9a862;
+  --gold-light: #e4d3ab;
+  --gold-wash: #f7f0e0;
+
+  /* --- Text -------------------------------------------------------------- */
+  --ink: #2b2b28; /* dark charcoal, never pure black */
+  --ink-soft: #5c5c56;
+  --ink-mute: #8d8d85;
+  --ink-on-dark: #f6f2ea;
+
+  /* --- Feedback ---------------------------------------------------------- */
+  --danger: #a8503f;
+  --danger-wash: #f8ece9;
+  --success: #3f7a5e;
+  --success-wash: #eaf3ee;
+
+  /* --- Shape ------------------------------------------------------------- */
+  /* Soft rounded cards are part of the identity, so the radii are generous. */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --r-full: 999px;
+
+  /* --- Elevation --------------------------------------------------------- */
+  /* Shadows are warm-tinted, never grey — grey on cream looks dirty. */
+  --shadow-sm: 0 1px 2px rgba(43, 43, 40, 0.04), 0 1px 3px rgba(43, 43, 40, 0.03);
+  --shadow-md: 0 2px 8px rgba(43, 43, 40, 0.05), 0 1px 3px rgba(43, 43, 40, 0.04);
+  --shadow-lg: 0 8px 28px rgba(43, 43, 40, 0.08);
+
+  /* --- Spacing ----------------------------------------------------------- */
+  /* Plenty of white space is a stated requirement, so the scale starts loose. */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+
+  /* --- Type -------------------------------------------------------------- */
+  --font: 'Vazirmatn', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fs-xs: 11px;
+  --fs-sm: 13px;
+  --fs-base: 15px;
+  --fs-md: 17px;
+  --fs-lg: 20px;
+  --fs-xl: 24px;
+  --fs-2xl: 30px;
+  /* Persian script needs more leading than Latin to stay readable. */
+  --lh: 1.75;
+  --lh-tight: 1.45;
+
+  /* --- Motion ------------------------------------------------------------ */
+  /* "Subtle animation": short, eased, never bouncy. */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast: 140ms;
+  --t-base: 220ms;
+  --t-slow: 380ms;
+
+  /* --- Layout ------------------------------------------------------------ */
+  --nav-h: 62px;
+  --max-w: 560px; /* mobile-first: content never sprawls on a tablet */
+}
+
+/* ---------------------------------------------------------------------------
+   Reset
+   --------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Prevent iOS from inflating text in landscape. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--fs-base);
+  line-height: var(--lh);
+  /* Whole-app RTL. Set here rather than per-component so no layout can
+     accidentally opt out. */
+  direction: rtl;
+  text-align: right;
+  -webkit-font-smoothing: antialiased;
+  /* Respect notches in standalone/TWA display. */
+  padding-bottom: env(safe-area-inset-bottom);
+  /* Stop horizontal rubber-banding, which in RTL is easy to trigger. */
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  color: var(--emerald-deep);
+  /* Slightly tighter tracking suits Vazirmatn at heading sizes. */
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: var(--fs-2xl); }
+h2 { font-size: var(--fs-lg); }
+h3 { font-size: var(--fs-md); }
+
+p { margin: 0 0 var(--sp-4); }
+p:last-child { margin-bottom: 0; }
+
+a {
+  color: var(--emerald-soft);
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Numbers inside Persian text: keep them in the Persian glyph set where the
+   font provides it, so mixed content does not look spliced. */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout primitives
+   --------------------------------------------------------------------------- */
+
+.page {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  /* Room for the fixed bottom nav plus the safe area. */
+  padding: 0 var(--sp-4) calc(var(--nav-h) + var(--sp-8) + env(safe-area-inset-bottom));
+}
+
+.section {
+  margin-block: var(--sp-8);
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.section-head h2 {
+  font-size: var(--fs-md);
+}
+
+.section-more {
+  font-size: var(--fs-sm);
+  color: var(--ink-mute);
+  white-space: nowrap;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* Horizontal scroller for content rails. In RTL the natural scroll direction
+   is already right-to-left, so no transform hacks are needed. */
+.rail {
+  display: flex;
+  gap: var(--sp-3);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  /* Bleed to the screen edges so cards feel like they continue off-screen. */
+  margin-inline: calc(var(--sp-4) * -1);
+  padding-inline: var(--sp-4);
+  padding-bottom: var(--sp-2);
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail > * {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Cards
+   --------------------------------------------------------------------------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--sage-light);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--sp-5);
+  transition: box-shadow var(--t-base) var(--ease), transform var(--t-base) var(--ease);
+}
+
+/* Only interactive cards lift. A static card that moves is noise. */
+a.card:active,
+button.card:active {
+  transform: scale(0.985);
+  box-shadow: var(--shadow-md);
+}
+
+.card-flat {
+  background: var(--card-alt);
+  border: none;
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Buttons
+   --------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  /* 46px min height: comfortable for thumbs, which the brief asks for. */
+  min-height: 46px;
+  padding: 0 var(--sp-5);
+  border: 1px solid transparent;
+  border-radius: var(--r-full);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+  white-space: nowrap;
+}
+
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+.btn-primary {
+  background: var(--emerald);
+  color: var(--ink-on-dark);
+}
+.btn-primary:active { background: var(--emerald-deep); }
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--sage);
+  color: var(--emerald);
+}
+.btn-ghost:active { background: var(--sage-wash); }
+
+/* Gold is reserved for unlock/premium actions so it always means "paid". */
+.btn-gold {
+  background: var(--gold);
+  color: #3a2f14;
+}
+
+.btn-block { width: 100%; }
+
+.btn-sm {
+  min-height: 36px;
+  padding: 0 var(--sp-4);
+  font-size: var(--fs-sm);
+}
+
+/* ---------------------------------------------------------------------------
+   Badges and chips
+   --------------------------------------------------------------------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 3px var(--sp-3);
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-premium {
+  background: var(--gold-wash);
+  color: #7a5f21;
+  border: 1px solid var(--gold-light);
+}
+
+.badge-free {
+  background: var(--sage-wash);
+  color: var(--emerald);
+  border: 1px solid var(--sage-light);
+}
+
+.badge-locked {
+  background: var(--card-alt);
+  color: var(--ink-mute);
+  border: 1px solid var(--sage-light);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 var(--sp-4);
+  background: var(--card);
+  border: 1px solid var(--sage-light);
+  border-radius: var(--r-full);
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+  transition: all var(--t-fast) var(--ease);
+}
+
+.chip[aria-pressed='true'],
+.chip.is-active {
+  background: var(--emerald);
+  border-color: var(--emerald);
+  color: var(--ink-on-dark);
+}
+
+/* ---------------------------------------------------------------------------
+   Forms
+   --------------------------------------------------------------------------- */
+
+.field {
+  display: block;
+  margin-bottom: var(--sp-4);
+}
+
+.field > span {
+  display: block;
+  margin-bottom: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  min-height: 46px;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--card);
+  border: 1px solid var(--sage);
+  border-radius: var(--r-md);
+  font-family: inherit;
+  font-size: var(--fs-base);
+  color: var(--ink);
+  /* Inherit RTL rather than forcing it, so an LTR field (email, mantra
+     transliteration) can override with dir="ltr". */
+  transition: border-color var(--t-fast) var(--ease);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--emerald-soft);
+}
+
+.textarea {
+  min-height: 120px;
+  line-height: var(--lh);
+  resize: vertical;
+}
+
+/* Latin-only inputs. Persian UI, Latin value: the label stays RTL, the value
+   reads LTR. */
+.input-ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* ---------------------------------------------------------------------------
+   States (brief §30)
+   --------------------------------------------------------------------------- */
+
+.state {
+  padding: var(--sp-10) var(--sp-5);
+  text-align: center;
+  color: var(--ink-mute);
+}
+
+.state-icon {
+  font-size: 34px;
+  margin-bottom: var(--sp-3);
+  opacity: 0.55;
+}
+
+.state-title {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: var(--sp-2);
+}
+
+.state-body {
+  font-size: var(--fs-sm);
+  max-width: 34ch;
+  margin: 0 auto var(--sp-5);
+}
+
+/* Skeletons shimmer along the inline axis; the direction is mirrored for RTL
+   automatically because the gradient uses logical `to left`. */
+.skeleton {
+  background: linear-gradient(to left, var(--card-alt) 25%, var(--sage-wash) 50%, var(--card-alt) 75%);
+  background-size: 400% 100%;
+  border-radius: var(--r-md);
+  animation: shimmer 1.4s var(--ease) infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 0% 0; }
+  to { background-position: 100% 0; }
+}
+
+.toast {
+  position: fixed;
+  inset-inline: var(--sp-4);
+  bottom: calc(var(--nav-h) + var(--sp-4) + env(safe-area-inset-bottom));
+  z-index: 60;
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+.toast-success { background: var(--success); color: #fff; }
+.toast-error { background: var(--danger); color: #fff; }
+
+/* ---------------------------------------------------------------------------
+   Motion preferences
+   --------------------------------------------------------------------------- */
+
+/* Honour the OS setting. A wellness app that ignores reduced-motion is
+   contradicting itself. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Visible focus for keyboard users, suppressed for pointer users. */
+:focus-visible {
+  outline: 2px solid var(--emerald-soft);
+  outline-offset: 2px;
+}

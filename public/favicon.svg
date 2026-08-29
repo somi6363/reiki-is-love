@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Brand mark: a lotus-like open form in emerald on cream, with a champagne
+       gold centre. Deliberately geometric rather than illustrative, since the
+       brief rules out cosmic and fantasy imagery. -->
+  <rect width="512" height="512" rx="112" fill="#faf6ef"/>
+  <g fill="none" stroke="#1f4d3d" stroke-width="18" stroke-linecap="round">
+    <!-- centre petal -->
+    <path d="M256 132 C 296 186 296 250 256 300 C 216 250 216 186 256 132 Z"/>
+    <!-- side petals -->
+    <path d="M256 300 C 206 288 168 250 158 200 C 208 206 244 244 256 300 Z"/>
+    <path d="M256 300 C 306 288 344 250 354 200 C 304 206 268 244 256 300 Z"/>
+    <!-- cradle -->
+    <path d="M150 330 C 196 372 316 372 362 330" stroke-width="16"/>
+  </g>
+  <circle cx="256" cy="222" r="20" fill="#c9a862"/>
+</svg>

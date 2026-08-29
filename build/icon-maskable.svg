@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Maskable variant. Android may crop this to a circle, so the artwork must
+       stay inside the inner 80% safe zone: a circle of radius 204 centred on
+       (256,256).
+
+       The artwork's bounding box is x 150..362, y 132..372, i.e. 212 x 240
+       centred on (256,252). Its half-diagonal is sqrt(106^2 + 120^2) = 160,
+       so a scale of up to 204/160 = 1.27 would still fit. 0.85 is used: well
+       inside the safe circle while still filling the tile.
+
+       Background is full-bleed with no rounded corners because the OS applies
+       its own mask. -->
+  <rect width="512" height="512" fill="#faf6ef"/>
+  <g transform="translate(256 256) scale(0.85) translate(-256 -252)">
+    <g fill="none" stroke="#1f4d3d" stroke-width="20" stroke-linecap="round">
+      <path d="M256 132 C 296 186 296 250 256 300 C 216 250 216 186 256 132 Z"/>
+      <path d="M256 300 C 206 288 168 250 158 200 C 208 206 244 244 256 300 Z"/>
+      <path d="M256 300 C 306 288 344 250 354 200 C 304 206 268 244 256 300 Z"/>
+      <path d="M150 330 C 196 372 316 372 362 330" stroke-width="18"/>
+    </g>
+    <circle cx="256" cy="222" r="22" fill="#c9a862"/>
+  </g>
+</svg>

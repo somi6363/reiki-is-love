@@ -1,0 +1,36 @@
+/**
+ * Vazirmatn — self-hosted.
+ *
+ * Self-hosted rather than loaded from a CDN for three reasons: the app is a
+ * PWA and the font must be precached for offline use, a CDN request from Iran
+ * is unreliable, and Google Fonts is not reachable there at all.
+ *
+ * Only three weights are shipped (regular / medium / bold). Each is ~50KB, so
+ * adding more would cost more than it gains.
+ */
+
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  /* swap: show text immediately in the fallback, then restyle. Never hide
+     Persian text waiting for a font. */
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
