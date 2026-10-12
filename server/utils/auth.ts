@@ -51,7 +51,7 @@ export const createSession = (event: H3Event, userId: number): string => {
   setCookie(event, COOKIE, token, {
     httpOnly: true, // JS must never be able to read it
     sameSite: 'lax', // survives normal navigation, blocks cross-site POSTs
-    secure: !import.meta.dev, // dev runs on http://localhost
+    secure: process.env.LOCAL_PREVIEW !== '1' && !import.meta.dev, // disable only for loopback preview
     path: '/',
     expires,
   })
