@@ -17,3 +17,7 @@ android/
 *.jks
 public/uploads/*
 !public/uploads/.gitkeep
+
+# Live-swap copies used while previewing builds
+.output-live
+.output-prev
