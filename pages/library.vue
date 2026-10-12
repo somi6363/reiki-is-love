@@ -1,0 +1,5 @@
+<script setup>
+const {user}=useReiki()
+const {data:favorites}=await useFetch('/api/account/favorites',{immediate:!!user.value,default:()=>[]})
+</script>
+<template><main class="page"><div class="page-heading"><small>همراه‌هایی که نگه داشته‌ای</small><h1>کتابخانهٔ من</h1></div><div class="quick-grid"><NuxtLink to="/discover?type=meditation"><AppIcon name="lotus"/>مراقبه‌ها</NuxtLink><NuxtLink to="/discover?type=mantra"><AppIcon name="moon"/>مانتراها</NuxtLink><NuxtLink to="/my-courses"><AppIcon name="book"/>دوره‌ها</NuxtLink><NuxtLink to="/journal"><AppIcon name="user"/>ژورنال</NuxtLink></div><section class="section"><h2>علاقه‌مندی‌های تو</h2><NuxtLink v-if="!user" to="/profile" class="btn btn-primary">برای ذخیرهٔ علاقه‌مندی‌ها وارد شو</NuxtLink><p v-else-if="!favorites.length" class="state">هنوز چیزی ذخیره نکرده‌ای. کنار محتوایی که دوست داری، قلب را لمس کن.</p><div v-else class="card-grid filters"><ContentCard v-for="item in favorites" :key="item.id" :item="item"/></div></section><NuxtLink to="/discover" class="btn btn-ghost">کشف محتوای تازه ←</NuxtLink></main></template>

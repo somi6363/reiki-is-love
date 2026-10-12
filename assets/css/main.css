@@ -468,6 +468,486 @@ button.card:active {
 .toast-error { background: var(--danger); color: #fff; }
 
 /* ---------------------------------------------------------------------------
+   App shell (brand bar, notices)
+   --------------------------------------------------------------------------- */
+
+.brand-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: var(--sp-4) var(--sp-4) var(--sp-2);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--emerald-deep);
+  font-weight: 700;
+  font-size: var(--fs-md);
+}
+.brand img {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+}
+.brand small {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--ink-mute);
+  line-height: var(--lh-tight);
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-full);
+  background: var(--sage-wash);
+  border: 1px solid var(--sage-light);
+  color: var(--emerald);
+  font-weight: 700;
+  font-size: var(--fs-md);
+}
+
+/* Status message float — styled like the toast but driven by app state. */
+.notice {
+  position: fixed;
+  inset-inline: var(--sp-4);
+  bottom: calc(var(--nav-h) + var(--sp-4) + env(safe-area-inset-bottom));
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--emerald);
+  color: var(--ink-on-dark);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--fs-sm);
+}
+.notice button {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: var(--fs-lg);
+  line-height: 1;
+  opacity: 0.8;
+  padding: 0 var(--sp-1);
+}
+
+/* ---------------------------------------------------------------------------
+   Page furniture
+   --------------------------------------------------------------------------- */
+
+.page-heading {
+  margin: var(--sp-5) 0 var(--sp-6);
+}
+.page-heading small {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: var(--sp-2);
+}
+.page-heading h1 {
+  font-size: var(--fs-xl);
+}
+.page-heading p {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--ink-mute);
+}
+
+.block { display: block; }
+
+/* The health disclaimer is legally important and appears on most pages; it
+   should read as quiet fine print, not as a card competing for attention. */
+.disclaimer {
+  margin-top: var(--sp-8);
+  font-size: var(--fs-xs);
+  line-height: 1.9;
+  color: var(--ink-mute);
+  text-align: center;
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
+/* Long-form reading: journal entries keep their own line breaks. */
+.prose {
+  color: var(--ink-soft);
+  white-space: pre-line;
+  line-height: 2;
+}
+article.prose {
+  font-size: var(--fs-md);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------------
+   Filters, grids and rails
+   --------------------------------------------------------------------------- */
+
+.filters {
+  margin-block: var(--sp-4);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin-block: var(--sp-4);
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-2);
+  margin-block: var(--sp-5);
+}
+.quick-grid a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-1);
+  background: var(--card);
+  border: 1px solid var(--sage-light);
+  border-radius: var(--r-md);
+  color: var(--ink-soft);
+  font-size: var(--fs-xs);
+  text-align: center;
+}
+.quick-grid a span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-full);
+  background: var(--sage-wash);
+  color: var(--emerald);
+}
+.quick-grid a:active { background: var(--sage-wash); }
+
+.day-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* A compact link/row: icon, label, trailing arrow. */
+.mini-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--card);
+  border: 1px solid var(--sage-light);
+  border-radius: var(--r-md);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+}
+.mini-row svg { color: var(--emerald); flex: 0 0 auto; }
+.mini-row small { color: var(--ink-mute); }
+.mini-row > span:last-child { margin-inline-start: auto; color: var(--ink-mute); }
+.mini-row:active { background: var(--sage-wash); }
+
+/* Search field: the icon lives inside the pill, the input loses its own
+   border so the whole control reads as one object. */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 46px;
+  padding: 0 var(--sp-4);
+  margin-bottom: var(--sp-2);
+  background: var(--card);
+  border: 1px solid var(--sage);
+  border-radius: var(--r-full);
+}
+.search-box svg { color: var(--ink-mute); flex: 0 0 auto; }
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  min-height: 44px;
+}
+.search-box input:focus { outline: none; }
+
+/* ---------------------------------------------------------------------------
+   Home
+   --------------------------------------------------------------------------- */
+
+.greeting {
+  margin: var(--sp-5) 0 var(--sp-6);
+}
+.greeting small {
+  font-size: var(--fs-xs);
+  color: var(--ink-mute);
+}
+.greeting h1 {
+  font-size: var(--fs-xl);
+  margin-block: var(--sp-1);
+}
+.greeting h1 span { font-size: 0.75em; }
+.greeting p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: var(--sp-8) var(--sp-6);
+  border-radius: var(--r-xl);
+  background: linear-gradient(155deg, var(--emerald-soft), var(--emerald-deep));
+  color: var(--ink-on-dark);
+}
+.hero h2 { color: #fff; font-size: var(--fs-xl); }
+.hero p {
+  margin-top: var(--sp-3);
+  color: color-mix(in srgb, #fff 78%, transparent);
+  font-size: var(--fs-sm);
+  max-width: 30ch;
+}
+.eyebrow {
+  display: block;
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--gold-light);
+}
+.hero-btn {
+  margin-top: var(--sp-6);
+  background: var(--card);
+  color: var(--emerald-deep);
+}
+
+/* Five soft drifting leaves behind the hero copy. Purely decorative. */
+.hero-leaves i {
+  position: absolute;
+  border-radius: var(--r-full);
+  background: rgba(255, 255, 255, 0.10);
+  pointer-events: none;
+}
+.hero-leaves i:nth-child(1) { width: 90px; height: 90px; top: -30px; inset-inline-start: -20px; }
+.hero-leaves i:nth-child(2) { width: 46px; height: 46px; bottom: 18px; inset-inline-start: 38%; background: rgba(255, 255, 255, 0.07); }
+.hero-leaves i:nth-child(3) { width: 22px; height: 22px; top: 26px; inset-inline-end: 22%; background: rgba(228, 211, 171, 0.35); }
+.hero-leaves i:nth-child(4) { width: 64px; height: 64px; bottom: -24px; inset-inline-end: -14px; background: rgba(255, 255, 255, 0.06); }
+.hero-leaves i:nth-child(5) { width: 12px; height: 12px; top: 52%; inset-inline-end: 12%; background: rgba(228, 211, 171, 0.5); }
+
+.moods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.recommendations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+.recommendations > small { color: var(--ink-mute); font-size: var(--fs-xs); }
+
+.moon-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-block: var(--sp-8);
+  padding: var(--sp-5);
+  background: var(--card);
+  border: 1px solid var(--sage-light);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+}
+.moon-banner small { font-size: var(--fs-xs); color: var(--ink-mute); }
+.moon-banner h3 { margin-block: 2px; }
+.moon-banner p { margin: 0; font-size: var(--fs-xs); color: var(--ink-soft); }
+
+/* The orb is a waxing crescent: a lit disc with a cream bite taken out. */
+.moon-orb {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--r-full);
+  background: radial-gradient(circle at 38% 42%, #f2e7c8, var(--gold) 78%);
+  box-shadow: inset -12px -6px 0 -2px var(--card);
+}
+
+.practice-banner {
+  display: block;
+  margin-block: var(--sp-8);
+  padding: var(--sp-6);
+  background: linear-gradient(150deg, var(--sage-wash), var(--gold-wash));
+  border: 1px solid var(--gold-light);
+  border-radius: var(--r-lg);
+  color: var(--ink);
+}
+.practice-banner small { font-size: var(--fs-xs); color: var(--ink-mute); }
+.practice-banner h2 { margin-block: var(--sp-2); }
+.practice-banner p { font-size: var(--fs-sm); color: var(--ink-soft); }
+.practice-banner span { font-weight: 600; color: var(--emerald); font-size: var(--fs-sm); }
+
+/* ---------------------------------------------------------------------------
+   Lists and detail pieces
+   --------------------------------------------------------------------------- */
+
+/* Calendar rows and course-lesson rows: a full-width button inside a card. */
+.event-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-2) 0;
+  background: none;
+  border: none;
+  text-align: right;
+  color: var(--ink);
+}
+.event-button h3 { margin-block: var(--sp-1); font-size: var(--fs-md); }
+.event-button small { font-size: var(--fs-xs); color: var(--ink-mute); }
+.event-button svg { color: var(--ink-mute); flex: 0 0 auto; }
+
+.event-detail {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--sage-light);
+}
+.event-detail h4 { font-size: var(--fs-sm); color: var(--emerald); margin-bottom: var(--sp-2); }
+.event-detail p { font-size: var(--fs-sm); color: var(--ink-soft); }
+
+/* Course cards on the Reiki/library pages: art tile + copy. */
+.course-card {
+  display: flex;
+  align-items: stretch;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+  padding: var(--sp-3);
+  background: var(--card);
+  border: 1px solid var(--sage-light);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+}
+.course-art {
+  flex: 0 0 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  border-radius: var(--r-md);
+  background: linear-gradient(160deg, var(--sage-light), var(--sage-wash));
+  color: var(--emerald);
+}
+.course-art small {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+}
+.course-card h2 { font-size: var(--fs-md); margin-bottom: var(--sp-1); }
+.course-card p { font-size: var(--fs-sm); color: var(--ink-soft); margin-bottom: var(--sp-2); }
+
+.price {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  color: #7a5f21;
+}
+
+/* Locked premium content gets the gold treatment so "paid" is unmistakable. */
+.lock-card {
+  text-align: center;
+  border-color: var(--gold-light);
+  background: linear-gradient(170deg, var(--card), var(--gold-wash));
+}
+.lock-card svg {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto var(--sp-3);
+  color: var(--gold);
+}
+.lock-card p { font-size: var(--fs-sm); color: var(--ink-soft); }
+
+.premium-card {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-md);
+}
+
+/* Tap counter: a big soft target you can hit without looking. */
+.counter { text-align: center; }
+.counter h2 { font-size: var(--fs-lg); }
+.counter-tap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  width: 152px;
+  height: 152px;
+  margin: var(--sp-5) auto;
+  border-radius: var(--r-full);
+  border: 2px dashed var(--sage);
+  background: var(--sage-wash);
+  color: var(--emerald-deep);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+}
+.counter-tap small {
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--ink-mute);
+}
+.counter-tap:active { background: var(--sage-light); }
+
+/* Journal editor: faint ruled lines, like a paper notebook. */
+.journal-paper {
+  min-height: 170px;
+  line-height: 32px;
+  padding-top: 4px;
+  background: repeating-linear-gradient(
+    var(--card),
+    var(--card) 31px,
+    var(--sage-light) 32px
+  );
+}
+
+.admin { display: grid; gap: var(--sp-4); align-content: start; }
+
+/* Offline fallback: a calm full-page state, no nav clutter needed. */
+.page.offline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 68vh;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------------------
    Motion preferences
    --------------------------------------------------------------------------- */
 
