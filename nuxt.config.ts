@@ -22,13 +22,23 @@ export default defineNuxtConfig({
     preset: 'node-server',
     compressPublicAssets: { gzip: true, brotli: true },
 
-    // Prerendered because the PWA's navigateFallback must point at a *static*
-    // precached URL. Pointing it at an SSR route makes workbox's
-    // createHandlerBoundToURL throw at service-worker eval, which silently
-    // kills the whole fetch handler.
+    // '/' is prerendered so it can be the PWA's static navigateFallback: the
+    // service worker serves this shell for every navigation request, and Nuxt
+    // hydrates + routes client-side. Pointing the fallback at '/offline' (a
+    // separate static page) instead of the app shell would make an installed
+    // PWA show only the offline page for every route. '/offline' stays as the
+    // explicit "you are offline" destination a page can link to.
     prerender: {
-      routes: ['/offline'],
+      routes: ['/', '/offline'],
     },
+  },
+
+  // sw.js must always be revalidated, never served from the HTTP cache. With
+  // no Cache-Control the browser applies heuristic caching (~10% of file age)
+  // and an old service worker — with a stale navigateFallback — can survive
+  // for minutes to hours after a deploy, silently breaking navigation.
+  routeRules: {
+    '/sw.js': { headers: { 'cache-control': 'no-cache' } },
   },
 
   runtimeConfig: {
@@ -101,7 +111,7 @@ export default defineNuxtConfig({
 
     workbox: {
       globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
-      navigateFallback: '/offline',
+      navigateFallback: '/',
       navigateFallbackDenylist: [/^\/api\//, /^\/admin/, /^\/sw\.js$/, /^\/workbox-/],
       runtimeCaching: [
         {
@@ -121,13 +131,9 @@ export default defineNuxtConfig({
         },
         {
           urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
-          handler: 'NetworkFirst',
-          options: {
-            cacheName: 'api',
-            networkTimeoutSeconds: 5,
-            expiration: { maxEntries: 64, maxAgeSeconds: 600 },
-            cacheableResponse: { statuses: [0, 200] },
-          },
+          // Never persist authenticated responses (journals, entitlements,
+          // content bodies) in shared browser caches across account switches.
+          handler: 'NetworkOnly',
         },
       ],
     },
