@@ -53,7 +53,7 @@ export default defineEventHandler(async e=>{
  }
  if(s==='purchases'){
   const kind=oneOf(b.kind,['membership','course','content','program']),ref=id(b.id)
-  const tables={membership:'membership_plans',course:'courses',content:'content',program:'programs'}
+  const tables: Record<string,string>={membership:'membership_plans',course:'courses',content:'content',program:'programs'}
   const item=get(`SELECT * FROM ${tables[kind]} WHERE id=?`,ref)
   if(!item||(kind==='membership'?!item.active:item.status!=='published'))fail(404,'محصول موجود نیست')
   if(['content','program'].includes(kind)&&item.access_type!=='individual')fail(400,'این محتوا فروش تکی ندارد')

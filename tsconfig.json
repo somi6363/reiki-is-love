@@ -1,0 +1,14 @@
+{
+  // Nuxt generates .nuxt/tsconfig.json on every prepare/build; this file just
+  // points editors and `nuxt typecheck` at it. Do not hand-edit paths here —
+  // override them in .nuxt/tsconfig.json via nuxt.config instead.
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    // tests/*.test.ts import lib modules with explicit .ts extensions (they
+    // run through esbuild's loader directly, not through a bundler). Both
+    // flags are required together — allowImportingTsExtensions demands
+    // noEmit, and typecheck never emits anyway.
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  }
+}

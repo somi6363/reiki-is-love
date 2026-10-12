@@ -15,6 +15,8 @@
 - PWA: sw.js با `createHandlerBoundToURL("/")` (اپشل، نه صفحهٔ آفلاین)؛ precache
   آفلاین+فونت+asset؛ `/api/*` و `/admin` و media با NetworkOnly؛ هدر `cache-control:
   no-cache` روی `/sw.js` تا سرویسورکر کهنه در مرورگر مشتری نماند.
+- `npx nuxt typecheck` (typescript 5.9 + vue-tsc + @types/node): صفر خطا؛
+  تایپهای `Record` صریح در APIهای account/admin برای همین اضافه شدند.
 - `node scripts/make-admin.mjs <email>`: ارتقای idempotent حساب موجود به admin؛
   بدون رمز پیشفرض، بدون first-user-admin، بدون ایجاد حساب. آزموده شد (grant،
   تکرار=noop، ایمیل ناشناس=خروجی ۱).
@@ -34,7 +36,6 @@ node scripts/make-admin.mjs you@example.com            # بعد از ثبت‌ن
   فقط برای راه‌اندازی اولیه/محیط توسعه اجرا شود.
 
 ## موارد باقی‌مانده پیش از عرضه
-- تایپچک (`nuxt typecheck`) هنوز اجرا نشده.
 - پرداخت واقعی، تمدید خودکار، بازیابی رمز، تأیید ایمیل، رسانه/آپلود امن،
   گواهی، notification delivery، APK و استقرار اینترنتی: هیچکدام آماده نیستند.
 - انتساب دستهـمحتوا از UI پنل ادمین کامل نیست.

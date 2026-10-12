@@ -3,7 +3,7 @@ import { requireAdmin } from '../../utils/auth'
 import { all,get,run,tx } from '../../utils/db'
 import { body,fail,text,id,amount,oneOf } from '../../utils/http'
 // Explicit table/field allowlists; never expose journals through an admin registry.
-const registry={
+const registry: Record<string,{table:string;fields:string[]}>={
  content:{table:'content',fields:['type_id','slug','title','summary','body','payload','access_type','price','course_id','status','published_at','featured']},
  categories:{table:'categories',fields:['taxonomy','slug','title_fa','description','hidden']},
  types:{table:'content_types',fields:['slug','title_fa','field_schema']},

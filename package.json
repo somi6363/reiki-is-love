@@ -16,8 +16,11 @@
     "nuxt": "3.21.11"
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
     "@vite-pwa/nuxt": "1.1.1",
-    "esbuild": "^0.28.2"
+    "esbuild": "^0.28.2",
+    "typescript": "~5.9.0",
+    "vue-tsc": "^3.3.13"
   },
   "engines": {
     "node": ">=22.5.0"
