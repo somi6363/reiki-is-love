@@ -45,3 +45,20 @@ node scripts/make-admin.mjs you@example.com            # بعد از ثبت‌ن
 - ژورنال با user_id ایزوله است، نه E2E؛ دادهٔ حساس واقعی وارد نشود.
 - سرور پیش‌نمایش باید با process manager واقعی (systemd/pm2) اجرا شود؛
   nohup در این محیط ممکن است با پوستهٔ والد از بین برود.
+
+## استقرار — وضعیت: آماده، منتظر اقدام کاربر
+- زیرساخت آماده و پوش‌شده (`cd59431`): `Dockerfile` (بیلد چندمرحلهای)،
+  `docker-entrypoint.sh` (seed خودکار دیتابیس در بوت اول)، `server/api/ping`
+  (برای healthcheck و سرویسورکر)، `.dockerignore`.
+- ریپوی `somi6363/reiki-is-love` برای دسترسی Railway **عمومی شد** (برگشتپذیر است).
+- مسیر پیشنهادی: اتصال GitHub App به حساب Railway در داشبورد (یک بار) سپس
+  deploy از سورس؛ مسیر جایگزین: انتشار ایمیج روی GHCR با GitHub Actions.
+- **دو مانع — هر دو نیازمند اقدام کاربر:**
+  1. حساب Railway: خطای `Your trial has expired. Please select a plan`.
+     تا انتخاب پلن از داشبورد، projectCreate ممکن نیست.
+  2. توکن GitHub فقط `repo` دارد: push فایل workflow به scope `workflow` و
+     push به GHCR به scope `write:packages` نیاز دارد. فایل
+     `.github/workflows/docker-publish.yml` نوشته شده ولی هنوز commit نشده
+     (untracked) چون push آن رد میشود.
+- CLI ریل‌وی (v5.66.0) نصب است ولی با این توکن Unauthorized میدهد؛ خودِ
+  GraphQL با همان توکن کار میکند: `backboard.railway.com/graphql/v2`.
