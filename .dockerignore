@@ -1,0 +1,12 @@
+node_modules
+.nuxt
+.output
+.output-live
+.output-prev
+.data
+data
+.git
+.github
+*.log
+.env
+.env.*
