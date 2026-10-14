@@ -1,7 +1,7 @@
 #!/bin/sh
 # End-to-end smoke test against the live preview server. Exits non-zero on
 # the first real failure. Uses two accounts to verify isolation.
-B=http://127.0.0.1:3210
+B=${BASE:-http://127.0.0.1:3210}
 J1=/tmp/ril-u1.jar; J2=/tmp/ril-u2.jar; JA=/tmp/ril-admin.jar
 rm -f $J1 $J2 $JA
 H='-H content-type:application/json -H x-reiki-action:1'
@@ -97,6 +97,21 @@ expect 'non-admin blocked from admin' 403 $code
 # still pass the block-check above.
 code=$(curl -s -b $J1 -o /dev/null -w '%{http_code}' $B/api/admin/overview)
 expect 'admin can reach overview' 200 $code
+
+echo '— content ↔ category assignment —'
+curl -s -b $J1 $B/api/admin/content | grep -q 'category_ids' && ok 'content rows expose category_ids' || bad 'category_ids missing'
+cid=$(curl -s -b $J1 $B/api/admin/categories | python3 -c "import sys,json;d=json.load(sys.stdin);print(d[0]['id'] if d else '')")
+[ -n "$cid" ] || bad 'no categories to assign'
+nid=$(curl -s -b $J1 $B/api/admin/content | python3 -c "import sys,json;print(json.load(sys.stdin)[0]['id'])")
+body="{\"id\":$nid,\"type_id\":1,\"slug\":\"smoke-cat-test\",\"title\":\"تست\",\"access_type\":\"free\",\"status\":\"draft\",\"category_ids\":[$cid]}"
+curl -s -b $J1 $H -d "$body" $B/api/admin/content | grep -q '"ok":true' && ok 'save with category accepted' || bad 'save with category failed'
+back=$(curl -s -b $J1 $B/api/admin/content | python3 -c "import sys,json;d=json.load(sys.stdin);r=[x for x in d if x['id']==$nid][0];print(','.join(map(str,r.get('category_ids') or [])))")
+echo "$back" | grep -q "$cid" && ok 'category round-trips' || bad "category lost: got [$back]"
+curl -s -b $J1 $H -d "{\"id\":$nid,\"type_id\":1,\"slug\":\"smoke-cat-test\",\"title\":\"تست\",\"access_type\":\"free\",\"status\":\"draft\",\"category_ids\":[999999]}" $B/api/admin/content | grep -q 'دسته' && ok 'invalid category rejected' || bad 'invalid category accepted'
+# Omitting category_ids must keep the existing links (no silent detach).
+curl -s -b $J1 $H -d "{\"id\":$nid,\"type_id\":1,\"slug\":\"smoke-cat-test\",\"title\":\"تست\",\"access_type\":\"free\",\"status\":\"draft\"}" $B/api/admin/content > /dev/null
+back=$(curl -s -b $J1 $B/api/admin/content | python3 -c "import sys,json;d=json.load(sys.stdin);r=[x for x in d if x['id']==$nid][0];print(','.join(map(str,r.get('category_ids') or [])))")
+echo "$back" | grep -q "$cid" && ok 'omitting category_ids keeps links' || bad "links lost: [$back]"
 
 echo
 echo "RESULT: $pass passed, $fail failed"
